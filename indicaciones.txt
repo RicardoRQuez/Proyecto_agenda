@@ -1,0 +1,95 @@
+Crearemos un entorno virtual donde podremos instalar paquetes.
+
+pip install virtualenv
+
+python -m venv nombre_carpeta
+
+# Activamos el entorno virtual
+f1 -> python interpreter
+seleccionamos la version de python instalada en la carpeta
+
+#instalamos Django
+pip install django
+
+django-admin   nos mostrara comandos que podemos ejecurtar
+
+ejecutaremos
+django-admin startproject nombre_carpeta .
+
+para ejecutarlo utilizaremos
+python manage.py runserver
+
+python manage.py startapp nombre_app
+esto creara una nueva carpeta  la cual debe ser agregada en setting.py de la carpeta del proyecto 
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'nombre_app'
+]
+ posterior a eso crearemos las tablas necesarias con el comando 
+ python manage.py migrate
+
+ volvemos  ajecutar con 
+ python manage.py runserver
+ -----------------------------------------------------------------------------------------------------
+ instalaremos el modulo django rest framework
+ pip install djangorestframework
+ pip install django-cors-headers
+
+ debemos configurarlos
+
+ INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'corsheaders',
+    'rest_framework',
+    'usuarios'
+]
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+-----------------------------------------------------------------------
+Crearemos una tabla para guardar usuarios 
+En la carpeta de la app in al archivo models.py
+ class Usuarios(models.Model):
+    nombre = models.CharField(max_length=100)
+    apellido_paterno = models.CharField(max_length=100)
+    apellido_materno = models.CharField(max_length=100)
+    rut = models.CharField(max_length=12, unique=True)  # Puedes ajustar la longitud según tus necesidades
+    email = models.EmailField(unique=True)
+    telefono = models.CharField(max_length=15)
+    admin = models.BooleanField(default=False)
+
+python manage.py makemigrations usuarios
+python manage.py migrate usuarios
+
+creamos un super usuario
+python manage.py createsuperuser
+
+vamos a la ruta http://localhost:8000/admin/
+y logeamos
+ para añadir al panel de admin la app vamos a admin.py
+
+ from .models import Usuarios
+# Register your models here.
+admin.site.register(Usuarios)
+-----------------------------------------------------------------------
+
+vamos a la carpeta de la app
